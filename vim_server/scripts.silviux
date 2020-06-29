@@ -1,0 +1,2 @@
+john:echo 2
+firecracker:xmacroplay "$DISPLAY" < ~/voice/silviux/vim_server/scripts/menuclick

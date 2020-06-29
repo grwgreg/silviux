@@ -1,0 +1,90 @@
+//in settings.json:
+{
+  "vim.insertModeKeyBindingsNonRecursive": [
+      {
+          "before": ["<Esc>"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic off"
+              }
+          ],
+          "after": ["<Esc>"]
+      },
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+      {
+          "before": ["i"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["i"]
+      },
+      {
+          "before": ["I"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["I"]
+      },
+      {
+          "before": ["A"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["A"]
+      },
+      {
+          "before": ["a"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["a"]
+      },
+      {
+          "before": ["o"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["o"]
+      },
+      {
+          "before": ["O"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["O"]
+      },
+      // not perfect because goes into optimistic before actually in insert mode
+      // ie intend to clear to the letter 'x' via "c f x"
+      // it goes into optimistic as soon as c is pressed
+      {
+          "before": ["c"],
+          "commands": [
+              {
+                  "command": "workbench.action.tasks.runTask",
+                  "args": "optimistic on"
+              }
+          ],
+          "after": ["c"]
+      },
+  ],
+}

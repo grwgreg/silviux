@@ -1,0 +1,16 @@
+version: 1
+formatters:
+  simple:
+    format: '%(levelname)s - %(name)s - %(filename)s:%(lineno)d - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+loggers:
+  silviux:
+    level: INFO
+root:
+  level: INFO
+  handlers: [console]

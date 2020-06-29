@@ -1,0 +1,27 @@
+.speechtext-label {
+  padding: 4px 0 0 30px;
+}
+
+.speechtext-error {
+  color: #f86102;
+}
+
+.speechtext-final {
+  color: #1ceaff;
+}
+
+.parser-label {
+  padding: 4px 0 0 30px;
+}
+
+.parser-on {
+  color: #ff9ff3;
+}
+
+.parser-optimistic {
+  color: #87ebab;
+}
+
+.secondary-label {
+  padding: 4px 0 0 30px;
+}

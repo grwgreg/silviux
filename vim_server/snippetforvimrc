@@ -1,0 +1,25 @@
+"this will send json to udp port 5005 when entering/leaving insert mode
+"note this is synchronous and when I moved the !echo call to a function
+"it required a !redraw and created a noticable blink
+"There are plugins that let you make async calls,
+"https://www.vim.org/scripts/script.php?script_id=3431
+"also be aware in windows things are weird, probably have to use something
+"like netcat for the udp call and vim has special command
+"https://vim.fandom.com/wiki/Execute_external_programs_asynchronously_under_Windows
+function! OptimisticOn()
+  augroup silviux
+    autocmd InsertEnter * :silent !echo -n "{\"set_optimistic\": \"True\"}" >/dev/udp/localhost/5005
+    autocmd InsertLeave * :silent !echo -n "{\"set_optimistic\": \"False\"}" >/dev/udp/localhost/5005
+  augroup END
+endfunction
+
+function! OptimisticOff()
+  autocmd! silviux InsertEnter
+  autocmd! silviux InsertLeave
+endfunction
+
+"vim complains if OptimisticOff() called before any augroup named silviux exists
+augroup silviux
+augroup END
+"on by default
+call OptimisticOn()

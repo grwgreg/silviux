@@ -1,0 +1,14 @@
+*.pyc
+*.swp*
+*.sw*
+.selected-mic
+.notes
+corpus.txt
+vim_server/scripts
+lm_utils/data
+lm_utils/exp
+lm_utils/repos
+lm_utils/text
+lm_utils/scrape/node_modules
+lm_utils/scrape/text
+lm_utils/scrape/textmdn

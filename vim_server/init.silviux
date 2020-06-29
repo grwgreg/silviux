@@ -1,0 +1,155 @@
+"turn off toggling optimistic mode or the animation will flood the main loop with toggling messages
+if exists("*OptimisticOff")
+  call OptimisticOff()
+endif
+
+function! GetRegister(name)
+  return GetValue(a:name, 'registers.silviux')
+endfunction
+  
+function! SetRegister(name)
+  return SetValue(a:name, 'registers.silviux')
+endfunction
+
+function! GetMacro(name)
+  return GetValue(a:name, 'macros.silviux')
+endfunction
+  
+function! SetMacro(name)
+  return SetValue(a:name, 'macros.silviux')
+endfunction
+
+function! GetScript(name)
+  return GetValue(a:name, 'scripts.silviux')
+endfunction
+  
+function! SetScript(name)
+  return SetValue(a:name, 'scripts.silviux')
+endfunction
+
+
+function! GetValue(name, buffer)
+  execute "buffer " . a:buffer
+  normal! gg
+  let found = search("^" . a:name . ":")
+  if found
+    "find colon, move right, select to end of line, left, yank to register a
+    normal! f:lv$h"ay
+    return @a
+  else
+    return "NotFoundError: " . a:name
+  endif
+endfunction
+  
+function! SetValue(name, buffer)
+  execute "buffer " . a:buffer
+  normal! gg
+  let found = search("^" . a:name . ":")
+  let @a = a:name
+  if found
+    "center cursor, find colon, move right, select to end of line, left
+    normal! zzf:lv$h
+  else
+    "top of file, insert new line, paste register a, append colon, enter insert mode
+    normal! ggO
+    normal! "apa:
+    "entering insert mode is janky, maybe xdotool making active isnt enough?
+    redraw!
+    startinsert!
+  endif
+  return "success"
+endfunction
+
+function! SilviuxInit()
+  set noswapfile
+  execute "edit registers.silviux"
+  execute "edit macros.silviux"
+  execute "edit scripts.silviux"
+  execute "edit splash.silviux"
+  "read only to prevent overwriting ascii art
+  set readonly
+  "nowrap for ascii art
+  set nowrap
+  call OpenChan()
+endfunction
+
+function! OpenChan()
+  "let g:chan = ch_open('localhost:8765')
+  let g:chan = ch_open('localhost:8765', {'close_cb': 'ShutDown'})
+endfunction
+
+function! Send(msg)
+	call ch_sendexpr(g:chan, a:msg)
+endfunction
+
+function! CleanUp()
+	call ch_close(g:chan)
+endfunction
+
+function! SetWid(wid)
+  echom "setting wid: " + a:wid
+  let g:wid = a:wid
+endfunction
+
+function! ShutDown(channel)
+  buffer splash.silviux
+  "roll back all changes since last save of splash page
+  earlier 1f
+  bdelete
+
+  let buffers = ["init.silviux", "registers.silviux", "macros.silviux", "scripts.silviux"]
+
+  for b in buffers
+    execute "buffer " . b
+    if &modified
+      call MaximizeWindow()
+      echo "Unsaved changed but silviux is shutting down"
+      return
+    else
+      bdelete
+    endif
+  endfor
+
+  quit
+
+endfunction
+
+function! MaximizeWindow()
+  execute "!xdotool windowactivate " . g:wid
+endfunction
+
+function! EvalLine()
+  normal! V"ay
+  execute "@a"
+endfunction
+
+function! Animate()
+  let txt = [ " _____ _ _       _               ", "/  ___(_) |     (_)              ", "\\ `--. _| |_   ___ _   ___  __   ", " `--. \\ | \\ \\ / / | | | \\ \\/ /   ", "/\\__/ / | |\\ V /| | |_| |>  <    ", "\\____/|_|_| \\_/ |_|\\__,_/_/\\_\\   "]
+  let top = 2
+  let offset = 13
+	let i = 1
+  sleep 100m
+	while i < offset+len(txt[0]) + 5
+    silent! execute "normal! " . top . "G" 
+    let j = 0
+    while j < 6
+      silent! execute "normal! 0" . i . "l"
+      let ch = " "
+      if i >= offset && i < len(txt[0])+offset
+        let ch = txt[j][i-offset]
+      endif
+      silent! execute "normal! i" . ch
+      silent! execute "normal! 8lxj0"
+      let j += 1
+    endwhile
+    redraw
+    sleep 20m
+		let i += 1
+	endwhile
+  silent! execute "normal! " . (top+2) . "Gf▄hxa " 
+  silent! execute "normal! $F▄hxa " 
+  silent! execute "normal! " . (top+6) . "G0" 
+  redraw
+endfunction
+
+nnoremap <leader>m :call EvalLine()<cr>

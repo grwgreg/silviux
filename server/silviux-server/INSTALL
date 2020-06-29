@@ -1,0 +1,61 @@
+#Silviux note: I suggest using the Dockerfile instead of these install instructions
+
+Instructions for setting up a Silvius server on Ubuntu Xenial:
+
+1. Install kaldi
+
+sudo apt-get install vim gcc g++ make git
+
+cd ~/  # or a subdirectory, and adapt future commands appropriately
+git clone https://github.com/kaldi-asr/kaldi.git
+cd kaldi/tools
+./extras/check_dependencies.sh  # will print deps, for me that was:
+sudo apt-get install zlib1g-dev automake autoconf wget libtool subversion python
+sudo apt-get install libatlas3-base
+sudo ln -s -f /bin/bash /bin/sh  # :( not sure if this is actually required
+./extras/check_dependencies.sh  # make sure this is satisfied now
+
+make -j 4  # -j indicates how many CPU cores to use. if it fails, run without -j
+
+cd ../src
+./configure --shared  # --shared is necessary for gst-kaldi-nnet2-online
+make depend -j 4 ; make -j 4  # this may take >30 min
+
+cd gst-plugin
+make depend -j 4 ; make -j 4
+
+2. Build gst-kaldi-nnet2-online
+sudo apt-get install libgstreamer1.0-dev libjansson-dev
+
+cd ~/
+git clone https://github.com/dwks/gst-kaldi-nnet2-online.git
+cd gst-kaldi-nnet2-online/src
+export KALDI_ROOT=~/kaldi/
+export FSTROOT=~/kaldi/tools/openfst/
+make depend ; make
+
+3. Download silvius-backend
+# on older distros, need newer tornado version >= 4, via
+# sudo apt-get install python-pip ; pip install tornado
+
+sudo apt-get install python-gi python-yaml python-ws4py
+# without this, you get errors when launching workers:
+sudo apt-get install gstreamer1.0-plugins-good
+
+cd ~/
+git clone https://github.com/dwks/silvius-backend.git
+cd silvius-backend/models
+./silvius-tedlium-v1.0.sh  # downloads ~500MB and uses 2GB disk
+cd ..
+
+# run a master then a worker, or just a worker:
+    # to run a master:
+    python kaldigstserver/master_server.py
+
+    # to run a worker (connects to master on localhost):
+    export GST_PLUGIN_PATH=~/gst-kaldi-nnet2-online/src/
+    python kaldigstserver/worker.py -c ./silvius-tedlium.yaml
+
+    # to run a worker using the voxhub master server:
+    export GST_PLUGIN_PATH=~/gst-kaldi-nnet2-online/src/
+    python kaldigstserver/worker.py -c ./silvius-tedlium.yaml -u ws://silvius-server.voxhub.io:8019/worker/ws/speech

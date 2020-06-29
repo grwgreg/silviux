@@ -1,0 +1,190 @@
+use-nnet2: True
+#Silviux: decoder2.py now references conf.decoder where conf.decoder = conf.decoders[decoder]
+#The decoder is conf['default-decoder'] initially and changes on msg {'change_decoder': next_decoder}
+default-decoder: closed
+decoders:
+    programming:
+        use-threaded-decoder:  true
+        word-syms : models/programming/words.txt
+        model : models/programming/final.mdl
+        fst : models/programming/HCLG.fst
+        mfcc-config : models/programming/conf/mfcc.conf
+        ivector-extraction-config : models/programming/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+        endpoint-rule2-min-trailing-silence : 0.1
+    english:
+        use-threaded-decoder:  true
+        word-syms : models/english/words.txt
+        model : models/english/final.mdl
+        fst : models/english/HCLG.fst
+        mfcc-config : models/english/conf/mfcc.conf
+        ivector-extraction-config : models/english/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+    alphabet:
+        use-threaded-decoder:  true
+        word-syms : models/alphabet/words.txt
+        model : models/alphabet/final.mdl
+        fst : models/alphabet/HCLG.fst
+        mfcc-config : models/alphabet/conf/mfcc.conf
+        ivector-extraction-config : models/alphabet/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+        endpoint-rule2-min-trailing-silence : 0.2
+    closed:
+        use-threaded-decoder:  true
+        word-syms : models/closed/words.txt
+        model : models/closed/final.mdl
+        fst : models/closed/HCLG.fst
+        mfcc-config : models/closed/conf/mfcc.conf
+        ivector-extraction-config : models/closed/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+        endpoint-rule2-min-trailing-silence : 0.1
+    command:
+        use-threaded-decoder:  true
+        word-syms : models/command/words.txt
+        model : models/command/final.mdl
+        fst : models/command/HCLG.fst
+        mfcc-config : models/command/conf/mfcc.conf
+        ivector-extraction-config : models/command/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+    phones:
+        use-threaded-decoder:  true
+        word-syms : models/phones/words.txt
+        model : models/phones/final.mdl
+        fst : models/phones/HCLG.fst
+        mfcc-config : models/phones/conf/mfcc.conf
+        ivector-extraction-config : models/phones/conf/ivector_extractor.conf
+        #chain model specific config below:
+        #see https://github.com/alumae/kaldi-gstreamer-server/issues/173
+        min-active: 200
+        max-active: 7000
+        beam: 15.0
+        lattice-beam: 6.0
+        acoustic-scale: 1.0
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        traceback-period-in-secs: 0.25
+        chunk-length-in-secs: 0.25
+        frame-subsampling-factor: 3
+        num-nbest: 1
+        nnet-mode: 3
+    #The nnet2 tedlium models use different options
+    tedliummodel:
+        use-threaded-decoder:  true
+        word-syms : models/tedliummodel/words.txt
+
+        model : models/tedliummodel/final.mdl
+        fst : models/tedliummodel/HCLG.fst
+
+        #word-syms : test/models/english/restricted/words.txt
+        #fst : test/models/english/restricted/HCLG.fst
+
+        mfcc-config : models/tedliummodel/conf/mfcc.conf
+        ivector-extraction-config : models/tedliummodel/conf/ivector_extractor.conf
+        max-active: 10000
+        beam: 10.0 #was 10
+        lattice-beam: 6.0  # originally 6
+        acoustic-scale: 0.083
+        do-endpointing : true
+        endpoint-silence-phones : "1:2:3:4:5:6:7:8:9:10"
+        #traceback-period-in-secs: 0.25
+        #chunk-length-in-secs: 0.25
+        traceback-period-in-secs: 0.05
+        chunk-length-in-secs: 0.05
+        num-nbest: 10
+        #Additional functionality that you can play with:
+        #lm-fst:  test/models/english/tedlium_nnet_ms_sp_online/G.fst
+        #big-lm-const-arpa: test/models/english/tedlium_nnet_ms_sp_online/G.carpa
+        #phone-syms: test/models/english/tedlium_nnet_ms_sp_online/phones.txt
+        #word-boundary-file: test/models/english/tedlium_nnet_ms_sp_online/word_boundary.int
+        #do-phone-alignment: true
+        #
+  
+use-vad: False
+silence-timeout: 99999999
+
+# Hypothesis post-processor that does nothing
+post-processor: perl -npe 'BEGIN {use IO::Handle; STDOUT->autoflush(1);}'
+
+# The Silvius post-processor
+full-post-processor: ./silvius_post_processor.py
+
+logging:
+    version : 1
+    disable_existing_loggers: False
+    formatters:
+        simpleFormater:
+            format: '%(asctime)s - %(levelname)7s: %(name)10s: %(message)s'
+            datefmt: '%Y-%m-%d %H:%M:%S'
+    handlers:
+        console:
+            class: logging.StreamHandler
+            formatter: simpleFormater
+            level: DEBUG
+    root:
+        level: DEBUG
+        handlers: [console]

@@ -1,0 +1,14 @@
+stream:
+  server: localhost
+  port: 8080
+  device: -1
+  byterate: 16000
+vim:
+  host: localhost
+  port: 8765
+# volume_threshold is the rms value used in volume monitor above which counts as non silence
+# see mic/audio-gate-level.py 
+volume_threshold: 30
+sopare_dir: /home/walrus/voice/sopare
+sopare_port: 5005
+sopare_ip: "127.0.0.1"

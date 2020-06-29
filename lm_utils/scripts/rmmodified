@@ -1,0 +1,2 @@
+#!/bin/bash
+find ../repos -name "*.modified" -type f -delete
